@@ -4,6 +4,10 @@ A tiny Chrome extension for visually comparing the current page against another 
 
 It is meant for design implementation checks: open the page you are building, overlay the mockup page, adjust opacity, and nudge either the mockup iframe or the control panel independently.
 
+<img width="815" height="650" alt="Screenshot 2026-05-15 at 14 26 26" src="https://github.com/user-attachments/assets/f5595702-25df-4f6a-8d2d-5cb47871734c" />
+
+
+
 ## Features
 
 - Overlay any embeddable page in a full-window iframe.
