@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
+  <defs>
+    <g id="pixel-a">
+      <rect x="1" y="0" width="3" height="1"/>
+      <rect x="0" y="1" width="1" height="1"/>
+      <rect x="4" y="1" width="1" height="1"/>
+      <rect x="0" y="2" width="1" height="1"/>
+      <rect x="4" y="2" width="1" height="1"/>
+      <rect x="0" y="3" width="5" height="1"/>
+      <rect x="0" y="4" width="1" height="1"/>
+      <rect x="4" y="4" width="1" height="1"/>
+      <rect x="0" y="5" width="1" height="1"/>
+      <rect x="4" y="5" width="1" height="1"/>
+      <rect x="0" y="6" width="1" height="1"/>
+      <rect x="4" y="6" width="1" height="1"/>
+    </g>
+  </defs>
+
+  <use href="#pixel-a" x="4" y="3" fill="#1f1730" opacity="0.2"/>
+  <use href="#pixel-a" x="3" y="2" fill="#ff7ab8" opacity="0.86"/>
+  <use href="#pixel-a" x="7" y="6" fill="#1f1730" opacity="0.22"/>
+  <use href="#pixel-a" x="6" y="5" fill="#50d8ff" opacity="0.86"/>
+</svg>

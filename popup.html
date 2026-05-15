@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pixel Compare Pages</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main>
+      <h1>Pixel Compare</h1>
+
+      <label for="mockupUrl">Mockup page URL</label>
+      <input
+        id="mockupUrl"
+        type="url"
+        placeholder="http://localhost:3000/mockup"
+        autocomplete="off"
+        spellcheck="false"
+      >
+
+      <div class="range-row">
+        <label for="opacity">Opacity</label>
+        <output id="opacityValue" for="opacity">50%</output>
+      </div>
+      <input id="opacity" type="range" min="0" max="100" value="50">
+
+      <div class="actions">
+        <button id="showOverlay" type="button">Show overlay</button>
+        <button id="removeOverlay" type="button" class="secondary">Remove</button>
+      </div>
+
+      <button id="resetPosition" type="button" class="secondary wide">Reset position</button>
+
+      <p id="status" role="status" aria-live="polite"></p>
+    </main>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
