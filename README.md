@@ -11,6 +11,7 @@ It is meant for design implementation checks: open the page you are building, ov
 ## Features
 
 - Overlay any embeddable page in a full-window iframe.
+- Automatically match long page height and keep the comparison iframe vertically synced while you scroll.
 - Adjust overlay opacity.
 - Hide/show the comparison iframe without removing controls.
 - Drag the comparison iframe independently from the controls.

@@ -24,6 +24,8 @@
 
   let overlay = null;
   let state = { ...DEFAULT_STATE };
+  let scrollSyncScheduled = false;
+  let frameSizeScheduled = false;
 
   function clampOpacity(value) {
     const number = Number(value);
@@ -94,6 +96,53 @@
     if (!overlay) return;
 
     overlay.frameBox.style.transform = `translate(${state.x}px, ${state.y}px)`;
+    syncFrameToScroll();
+  }
+
+  function getScrollableDocumentHeight() {
+    const { body, documentElement } = document;
+
+    return Math.max(
+      body?.scrollHeight || 0,
+      body?.offsetHeight || 0,
+      documentElement?.clientHeight || 0,
+      documentElement?.scrollHeight || 0,
+      documentElement?.offsetHeight || 0,
+      window.innerHeight || 0
+    );
+  }
+
+  function updateFrameSize() {
+    if (!overlay) return;
+
+    overlay.frameBox.style.height = `${getScrollableDocumentHeight()}px`;
+    syncFrameToScroll();
+  }
+
+  function requestFrameSizeUpdate() {
+    if (frameSizeScheduled) return;
+
+    frameSizeScheduled = true;
+    requestAnimationFrame(() => {
+      frameSizeScheduled = false;
+      updateFrameSize();
+    });
+  }
+
+  function syncFrameToScroll() {
+    if (!overlay) return;
+
+    overlay.iframe.style.transform = `translateY(${-window.scrollY}px)`;
+  }
+
+  function requestScrollSync() {
+    if (scrollSyncScheduled) return;
+
+    scrollSyncScheduled = true;
+    requestAnimationFrame(() => {
+      scrollSyncScheduled = false;
+      syncFrameToScroll();
+    });
   }
 
   function updateControlsPosition() {
@@ -134,6 +183,9 @@
   }
 
   function removeOverlay() {
+    window.removeEventListener("scroll", requestScrollSync);
+    window.removeEventListener("resize", requestFrameSizeUpdate);
+    overlay?.resizeObserver?.disconnect();
     overlay?.host.remove();
     document.getElementById(HOST_ID)?.remove();
     overlay = null;
@@ -167,7 +219,7 @@
         top: 0;
         left: 0;
         width: 100vw;
-        height: 100vh;
+        min-height: 100vh;
         pointer-events: none;
         will-change: transform;
       }
@@ -179,6 +231,7 @@
         border: 0;
         background: transparent;
         pointer-events: none;
+        will-change: transform;
       }
 
       .panel {
@@ -358,6 +411,17 @@
     shadow.append(style, frameBox, panel);
     document.documentElement.append(host);
 
+    const resizeObserver = typeof ResizeObserver === "function"
+      ? new ResizeObserver(requestFrameSizeUpdate)
+      : null;
+
+    if (resizeObserver) {
+      resizeObserver.observe(document.documentElement);
+      if (document.body) {
+        resizeObserver.observe(document.body);
+      }
+    }
+
     overlay = {
       host,
       frameBox,
@@ -369,7 +433,8 @@
       opacityValue,
       frameButton,
       moreButton,
-      advancedPanel
+      advancedPanel,
+      resizeObserver
     };
     updateControls();
 
@@ -473,6 +538,10 @@
     });
 
     updateControlsPosition();
+    updateFrameSize();
+
+    window.addEventListener("scroll", requestScrollSync, { passive: true });
+    window.addEventListener("resize", requestFrameSizeUpdate, { passive: true });
   }
 
   function showOverlay(payload = {}) {
@@ -518,6 +587,7 @@
     updateFrameVisibility();
     updatePosition();
     updateControlsPosition();
+    updateFrameSize();
     updateControls();
     persistState({ visible: true });
   }
